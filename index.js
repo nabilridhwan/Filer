@@ -77,7 +77,7 @@ function __getcontents__(path, input_dir_history) {
         if (items.length !== 0) {
 
             // Loop through the items
-            for (let i = 0; i < items.length; i++) {
+            for (let i = 1; i < items.length; i++) {
 
                 // Check if the items inside are files or direcotyr
                 fs.readdir("./" + input_dir_history[count] + "/" + items[i], (err, inner_dir_test) => {
@@ -85,10 +85,12 @@ function __getcontents__(path, input_dir_history) {
                     // Not a dir items return undefined!
                     if (!inner_dir_test) {
 
+                        let filetype = items[i].split(".")[items[i].split(".").length - 1]
+
                         // NOT A DIR
                         __dir_contents__[i] = {
                             "name": items[i],
-                            "type": "file",
+                            "type": filetype,
                             "link": {
                                 "dir": null,
                                 "file": `http://${server_on}/file/?f=${input_dir_history[count]}/${items[i]}`
@@ -110,6 +112,15 @@ function __getcontents__(path, input_dir_history) {
 
                         // as you see above, input_dir_history[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
 
+                    }
+
+                    __dir_contents__[0] = {
+                        "name": "ROOT",
+                        "type": "dir",
+                        "link": {
+                            "dir": `http://${server_on}/`,
+                            "file": null
+                        },
                     }
                 })
             }

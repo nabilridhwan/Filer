@@ -18,6 +18,10 @@ let __from_dir = __dirname + "/storage"
 
 app.use((request, response, next) => {
 
+    if(request.url.includes('getfile') == false){
+        response.writeHead(200, { 'Content-Type': 'text/html' });
+    }
+    
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
 
     // dir_log[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
@@ -40,16 +44,23 @@ app.use((request, response, next) => {
 })
 
 app.get('/', (request, response) => {
+
     __getcontents__(__from_dir, dir_log)
     setTimeout(() => {
-        response.send(__dir_contents__)
+        for(let i = 0; i < __dir_contents__.length; i++){
+            response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
+        }
+        response.end(`${__dir_contents__.length} item(s) found in this directory!`);
     }, 5);
 })
 
 app.get('/getdir', (request, response) => {
     __getcontents__(__from_dir + "/" + request.query.d, dir_log);
     setTimeout(() => {
-        response.send(__dir_contents__);
+        for(let i = 0; i < __dir_contents__.length; i++){
+            response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
+        }
+        response.end(`${__dir_contents__.length} item(s) found in this directory!`);
     }, 5);
 })
 
@@ -112,6 +123,7 @@ function __getcontents__(path, input_dir_history) {
                             "name": items[i],
                             "type": filetype,
                             "full_path": inner_dir,
+                            "html_link":  `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`,
                             "link": {
                                 "dir": null,
                                 "file": `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`
@@ -126,6 +138,7 @@ function __getcontents__(path, input_dir_history) {
                             "name": items[i],
                             "type": "dir",
                             "full_path": inner_dir,
+                            "html_link": `http://${server_on}/getdir?d=${input_dir_history[count]}/${items[i]}`,
                             "link": {
                                 "dir": `http://${server_on}/getdir?d=${input_dir_history[count]}/${items[i]}`,
                                 "file": null

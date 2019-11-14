@@ -1,65 +1,26 @@
-# Filer
-> A 'file-explorer' in NodeJS
+# Filer (v2)
+A 'file-explorer' in NodeJS
+
+## Changelogs
+-   Now recursive file or directory viewing is enabled through the help of a counter variable.
+-   Changed default port from 3000 to 3030. (Will randomise this in the future)
+-   Every file's `type` depends in the file extension.
+-   Every file or directory has an object `link` which contains both links for the file and dir. If the item is not of type `dir`, the link for the `dir` is `null` and vice-versa.
+-   The 'sophisticated' check (for when the item is a directory or a file) is now more better and reliable.
+-   The first index of the array is now a link which directs to the `root` folder.
 
 # Documentation
 > The IP (in this documentation is `127.0.0.1`) may vary from user to user. To know on which IP and Port the server is running from: When you run the NodeJS application, you will get a console.log() output saying: `Listening on: [IP_ADDRESS]:[PORT]`. For example: `Listening on: 127.0.0.1:3000`.
 
-
-## Flow of Program
-`GET HTTP://127.0.0.1:3000/`
--   Get the Private IP of the user (so that the user can access the server from any devices)
--   Read all items (both filenames and directory names) within the folder that the server is ran from.
--   A sophisticated check to check whether the items read are files or directory.
--   Spit it our by returning the response as a JSON to the user.
-
-`GET HTTP://127.0.0.1:3000/file/example.txt`
--   Return the file to the user using .sendFile()
-
-`GET HTTP://127.0.0.1:3000/dir/another_dir`
--   Read all items (both filenames and directory names) inside the directory specified.
--   A sophisticated check to check whether the items read are files or directory.
--   Spit it our by returning the response as a JSON to the user.
-
-## Example Output(s)
-`GET HTTP://127.0.0.1:3000/`
--   Gets all the files and directory within the folder where you ran the program from.
+## `GET` request output
+If a `GET` request is made to one of the enpoints, the server will return back with an array of objects containing every item in the directory. This is one example of the objects:
 ```json
-[{
-    "name": ".git",
-    "type": "dir",
-    "get_dir_link": "http://127.0.0.1:3000/dir/.git"
-}, {
-    "name": ".gitignore",
-    "type": "file",
-    "get_file_link": "http://127.0.0.1:3000/file/.gitignore",
-    "warning": "Recursive file viewing is not yet available!"
-}, {
-    "name": "index.js",
-    "type": "file",
-    "get_file_link": "http://127.0.0.1:3000/file/index.js",
-    "warning": "Recursive file viewing is not yet available!"
-}, {
-    "name": "node_modules",
-    "type": "dir",
-    "get_dir_link": "http://127.0.0.1:3000/dir/node_modules"
-}, {
-    "name": "package-lock.json",
-    "type": "file",
-    "get_file_link": "http://127.0.0.1:3000/file/package-lock.json",
-    "warning": "Recursive file viewing is not yet available!"
-}, {
-    "name": "README.md",
-    "type": "file",
-    "get_file_link": "http://127.0.0.1:3000/file/README.md",
-    "warning": "Recursive file viewing is not yet available!"
-}, {
-    "name": "test_dir",
-    "type": "dir",
-    "get_dir_link": "http://127.0.0.1:3000/dir/test_dir"
-}, {
-    "name": "test_readme.txt",
-    "type": "file",
-    "get_file_link": "http://127.0.0.1:3000/file/test_readme.txt",
-    "warning": "Recursive file viewing is not yet available!"
-}]
+{
+    "name": ITEM_NAME_HERE,
+    "type": ITEM_TYPE_HERE,
+    "link": {
+        "dir": LINK_FOR_DIR_HERE,
+        "file": LINK_FOR_FILE_HERE
+    }
+}
 ```

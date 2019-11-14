@@ -16,11 +16,11 @@ A 'file-explorer' in NodeJS
 If a `GET` request is made to one of the enpoints, the server will return back with an array of objects containing every item in the directory. This is one example of the objects:
 ```json
 {
-    "name": ITEM_NAME_HERE,
-    "type": ITEM_TYPE_HERE,
+    "name": "ITEM_NAME_HERE",
+    "type": "ITEM_TYPE_HERE",
     "link": {
-        "dir": LINK_FOR_DIR_HERE,
-        "file": LINK_FOR_FILE_HERE
+        "dir": "LINK_FOR_DIR_HERE",
+        "file": "LINK_FOR_FILE_HERE"
     }
 }
 ```

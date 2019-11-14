@@ -1,0 +1,25 @@
+  ______ _ _           
+ |  ____(_) |          
+ | |__   _| | ___ _ __ 
+ |  __| | | |/ _ \ '__|
+ | |    | | |  __/ |   
+ |_|    |_|_|\___|_|   
+                       
+Hey! Looks like you can see this file! (or not...)
+Thanks for using Filer! I am glad people are using my tools!
+
+Rest assured, none of your data is being logged to any of my servers.
+
+However do note that this server is served over HTTP meaning that everything you do can be seen by hackers!\
+
+My advise is for you to not store secret files inside here.
+
+It is not my intention to create a 'backdoor' for people but I actually wanted to implement basic features before implementing security.
+
+Your items can't be read when you end (or force-quit) the NodeJS application.
+
+I hope to implement HTTPS into this application soon!
+
+Regards,
+Nabil
+Developer

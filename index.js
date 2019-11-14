@@ -7,18 +7,38 @@ let server_on = null;
 
 let __dir_contents__ = [];
 
+let current_dir = ["/"]
+
+let count = 0;
+
 app.get('/', (request, response) => {
-    __getcontents__(__dirname)
-    response.send(__dir_contents__)
+
+    count++
+    current_dir.push("/")
+
+    __getcontents__(__dirname, current_dir)
+
+    setTimeout(() => {
+            response.send(__dir_contents__)
+    }, 10);
 })
 
-app.get('/dir/:directory', (request,response)=>{
-    __getcontents__(__dirname + "/" + request.params.directory);
-    response.send(__dir_contents__);
+app.get('/dir/', (request,response)=>{
+
+    count++
+
+    console.log(current_dir)
+    current_dir.push(request.query.d)
+
+    __getcontents__(__dirname + "/" + request.query.d, current_dir);
+
+    setTimeout(() => {
+            response.send(__dir_contents__);
+    }, 10);
 })
 
-app.get('/file/:filename', (request, response) => {
-    response.sendFile(__dirname + "/" + request.params.filename)
+app.get('/file/', (request, response) => {
+    response.sendFile(__dirname + "/" + request.query.f)
 })
 
 // Run on private ip
@@ -30,25 +50,25 @@ network.get_private_ip(function (err, ip) {
 })
 
 
-// Function to get contents of directory
-function __getcontents__(path){
+// Function to get contents of d
+function __getcontents__(path, current_dir){
     fs.readdir(path, (err, items) => {
 
-        // Empty
+        // Empty the dir_contents
         __dir_contents__ = [];
 
         if(items.length !== 0){
             for(let i = 0; i < items.length; i++){
-                fs.readdir(items[i], (err,inner_dir_test) => {
+                fs.readdir("./" + current_dir[count] + "/" + items[i], (err, inner_dir_test) => {
 
                     // Not a dir items return undefined!
-                    if(inner_dir_test == undefined){
+                    if(!inner_dir_test){
 
                         // NOT A DIR
                         __dir_contents__[i] = {
                             "name": items[i],
                             "type": "file",
-                            "get_file_link": `http://${server_on}/file/${items[i]}`,
+                            "get_file_link": `http://${server_on}/file/?f=${current_dir[count]}/${items[i]}`,
                             "warning": "Recursive file viewing is not yet available!"
                         }
                     }else{
@@ -57,7 +77,7 @@ function __getcontents__(path){
                         __dir_contents__[i] = {
                             "name": items[i],
                             "type": "dir",
-                            "get_dir_link": `http://${server_on}/dir/${items[i]}`
+                            "get_dir_link": `http://${server_on}/dir/?d=${current_dir[count]}/${items[i]}`
                         }
                     }
                 })

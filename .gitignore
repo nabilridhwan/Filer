@@ -3,3 +3,6 @@
 
 #  For node_modules
 *node_modules*
+
+# For personal folder
+*personal*

@@ -34,7 +34,8 @@ app.use((request, response, next) => {
         dir_log.push(request.query.d)
     }
 
-    console.log(dir_log)
+    console.log(`Directory log: ${JSON.stringify(dir_log)}`)
+    console.log(`Current Directory: ${JSON.stringify(dir_log[count])}`)
     next();
 })
 
@@ -45,14 +46,14 @@ app.get('/', (request, response) => {
     }, 5);
 })
 
-app.get('/dir/', (request, response) => {
+app.get('/getdir', (request, response) => {
     __getcontents__(__from_dir + "/" + request.query.d, dir_log);
     setTimeout(() => {
         response.send(__dir_contents__);
     }, 5);
 })
 
-app.get('/file/', (request, response) => {
+app.get('/getfile', (request, response) => {
     response.sendFile(__from_dir + "/" + request.query.f)
 })
 
@@ -85,7 +86,7 @@ function __getcontents__(path, input_dir_history) {
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
 
-        console.log(items.length)
+        console.log(`Length of item inside the current directory: ${items.length} \n\n`)
 
         // If the items found inside is not empty ['file1', 'file2']
         if (items.length > 0) {
@@ -93,11 +94,16 @@ function __getcontents__(path, input_dir_history) {
             // Loop through the items
             for (let i = 0; i < items.length; i++) {
 
+                // C:\Users\nabil\Documents\mailpushserver/storage//personal/images/visualres2.png
+                // After /storage/ is inpput_dir_history
+                // The last / is items[i]
+                let inner_dir = __from_dir + input_dir_history[count] + "/" + items[i];
+
                 // Check if the items inside are files or direcotyr
-                fs.readdir("./" + input_dir_history[count] + "/" + items[i], (err, inner_dir_test) => {
+                fs.readdir(inner_dir, (err, inner_dir_test) => {
 
                     // Not a dir items return undefined!
-                    if (inner_dir_test == undefined) {
+                    if (!inner_dir_test) {
 
                         let filetype = items[i].split(".")[items[i].split(".").length - 1]
 
@@ -105,9 +111,10 @@ function __getcontents__(path, input_dir_history) {
                         __dir_contents__[i] = {
                             "name": items[i],
                             "type": filetype,
+                            "full_path": inner_dir,
                             "link": {
                                 "dir": null,
-                                "file": `http://${server_on}/file/?f=${input_dir_history[count]}/${items[i]}`
+                                "file": `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`
                             },
                         }
 
@@ -118,8 +125,9 @@ function __getcontents__(path, input_dir_history) {
                         __dir_contents__[i] = {
                             "name": items[i],
                             "type": "dir",
+                            "full_path": inner_dir,
                             "link": {
-                                "dir": `http://${server_on}/dir/?d=${input_dir_history[count]}/${items[i]}`,
+                                "dir": `http://${server_on}/getdir?d=${input_dir_history[count]}/${items[i]}`,
                                 "file": null
                             },
                         }

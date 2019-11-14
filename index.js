@@ -21,11 +21,11 @@ app.use((request, response, next) => {
     count++
 
     // For GET root
-    if(request.url == "/"){
+    if (request.url == "/") {
 
         // Push '/'
         dir_log.push("/")
-    }else{
+    } else {
 
         // Push the directory query (d)
         dir_log.push(request.query.d)
@@ -38,14 +38,14 @@ app.use((request, response, next) => {
 app.get('/', (request, response) => {
     __getcontents__(__dirname, dir_log)
     setTimeout(() => {
-            response.send(__dir_contents__)
+        response.send(__dir_contents__)
     }, 5);
 })
 
-app.get('/dir/', (request,response)=>{
+app.get('/dir/', (request, response) => {
     __getcontents__(__dirname + "/" + request.query.d, dir_log);
     setTimeout(() => {
-            response.send(__dir_contents__);
+        response.send(__dir_contents__);
     }, 5);
 })
 
@@ -65,7 +65,7 @@ network.get_private_ip(function (err, ip) {
 
 
 // Function to get contents of the directory
-function __getcontents__(path, input_dir_history){
+function __getcontents__(path, input_dir_history) {
 
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
@@ -74,16 +74,16 @@ function __getcontents__(path, input_dir_history){
         __dir_contents__ = [];
 
         // If the items found inside is not empty ['file1', 'file2']
-        if(items.length !== 0){
+        if (items.length !== 0) {
 
             // Loop through the items
-            for(let i = 0; i < items.length; i++){
+            for (let i = 0; i < items.length; i++) {
 
                 // Check if the items inside are files or direcotyr
                 fs.readdir("./" + input_dir_history[count] + "/" + items[i], (err, inner_dir_test) => {
 
                     // Not a dir items return undefined!
-                    if(!inner_dir_test){
+                    if (!inner_dir_test) {
 
                         // NOT A DIR
                         __dir_contents__[i] = {
@@ -96,7 +96,7 @@ function __getcontents__(path, input_dir_history){
                         }
 
                         // as you see above, input_dir_history[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-                    }else{
+                    } else {
 
                         // IS A DIR
                         __dir_contents__[i] = {

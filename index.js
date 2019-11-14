@@ -46,18 +46,18 @@ function __getcontents__(path){
 
                         // NOT A DIR
                         __dir_contents__[i] = {
-                            name: items[i],
-                            type: "file",
-                            get_file_link: `http://${server_on}/file/${items[i]}`,
-                            warning: "Recursive file viewing is not yet available!"
+                            "name": items[i],
+                            "type": "file",
+                            "get_file_link": `http://${server_on}/file/${items[i]}`,
+                            "warning": "Recursive file viewing is not yet available!"
                         }
                     }else{
 
                         // IS A DIR
                         __dir_contents__[i] = {
-                            name: items[i],
-                            type: "dir",
-                            get_dir_link: `http://${server_on}/dir/${items[i]}`
+                            "name": items[i],
+                            "type": "dir",
+                            "get_dir_link": `http://${server_on}/dir/${items[i]}`
                         }
                     }
                 })

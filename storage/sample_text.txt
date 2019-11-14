@@ -10,7 +10,7 @@ Thanks for using Filer! I am glad people are using my tools!
 
 Rest assured, none of your data is being logged to any of my servers.
 
-However do note that this server is served over HTTP meaning that everything you do can be seen by hackers!\
+However do note that this server is served over HTTP meaning that everything you do can be seen by hackers!
 
 My advise is for you to not store secret files inside here.
 

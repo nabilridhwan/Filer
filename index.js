@@ -13,6 +13,8 @@ let __dir_contents__ = [];
 let dir_log = ["/"]
 let count = 0;
 
+// It will take the project folder and search inside "storage" dir
+let __from_dir = __dirname + "/storage"
 app.use((request, response, next) => {
 
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
@@ -36,21 +38,21 @@ app.use((request, response, next) => {
 })
 
 app.get('/', (request, response) => {
-    __getcontents__(__dirname, dir_log)
+    __getcontents__(__from_dir, dir_log)
     setTimeout(() => {
         response.send(__dir_contents__)
     }, 5);
 })
 
 app.get('/dir/', (request, response) => {
-    __getcontents__(__dirname + "/" + request.query.d, dir_log);
+    __getcontents__(__from_dir + "/" + request.query.d, dir_log);
     setTimeout(() => {
         response.send(__dir_contents__);
     }, 5);
 })
 
 app.get('/file/', (request, response) => {
-    response.sendFile(__dirname + "/" + request.query.f)
+  response.sendFile(__from_dir + "/" + request.query.f)
 })
 
 // Run on PRIVATE IP
@@ -66,7 +68,29 @@ network.get_private_ip(function (err, ip) {
 
 // Function to get contents of the directory
 function __getcontents__(path, input_dir_history) {
+    // Empty the dir_contents
+    __dir_contents__ = [];
 
+    // __dir_contents__[0] = {
+    //     "name": "ROOT",
+    //     "type": "dir",
+    //     "link": {
+    //         "dir": `http://${server_on}/`,
+    //         "file": null
+    //     },
+    // }
+
+    // Read the directory for both files and directories
+    fs.readdir(path, (err, items) => {
+
+        console.log(items.length)
+
+        // If the items found inside is not empty ['file1', 'file2']
+        if (items.length > 0) {
+
+            // Loop through the items
+            for (let i = 0; i < items.length; i++) {
+              
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
 
@@ -83,7 +107,7 @@ function __getcontents__(path, input_dir_history) {
                 fs.readdir("./" + input_dir_history[count] + "/" + items[i], (err, inner_dir_test) => {
 
                     // Not a dir items return undefined!
-                    if (!inner_dir_test) {
+                    if (inner_dir_test == undefined) {
 
                         let filetype = items[i].split(".")[items[i].split(".").length - 1]
 
@@ -111,16 +135,6 @@ function __getcontents__(path, input_dir_history) {
                         }
 
                         // as you see above, input_dir_history[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-
-                    }
-
-                    __dir_contents__[0] = {
-                        "name": "ROOT",
-                        "type": "dir",
-                        "link": {
-                            "dir": `http://${server_on}/`,
-                            "file": null
-                        },
                     }
                 })
             }

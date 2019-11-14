@@ -1,5 +1,13 @@
-# Filer (v2)
+# Filer (v2.1.0)
 A 'file-explorer' in NodeJS
+
+## Note
+-   To get files or directories to show up, please ensure that you place all your folders in the `storage` folder.
+-   This app is served over HTTP (Not encrypted!). DO NOT STORE SENSITIVE DATA ON THE `storage` FOLDER.
+
+## Changelogs
+-	Now, items are supposed to be placed within the 'storage' folder
+-   Removed Feature: The first index of the array is now a link which directs to the `root` folder.
 
 ## Why?
 I wanted to create my own knock-off of a storage system. So I created this! Any file or folder placed within the directory of this project (locally) will be fully accesible to other devices on the local network. For example: if I uploaded a video to a specific directory. My phone can access the item if it is on the same network connection as the host (my computer).

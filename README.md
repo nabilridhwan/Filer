@@ -1,6 +1,12 @@
 # Filer (v2)
 A 'file-explorer' in NodeJS
 
+## Why?
+I wanted to create my own knock-off of a storage system. So I created this! Any file or folder placed within the directory of this project (locally) will be fully accesible to other devices on the local network. For example: if I uploaded a video to a specific directory. My phone can access the item if it is on the same network connection as the host (my computer).
+
+## Disclaimer
+This 'product' is given to the client 'as is' and 'as available' without warranty or any kind of exchange, replacement or cancellation scheme. The client notes that the developer is not responsible for anything that happens to the client. This specific 'product' is licensed under the `GNU General Public License v3.0` license.
+
 ## Changelogs
 -   Now recursive file or directory viewing is enabled through the help of a counter variable.
 -   Changed default port from 3000 to 3030. (Will randomise this in the future)

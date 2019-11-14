@@ -18,7 +18,11 @@ let __from_dir = __dirname + "/storage"
 
 app.use((request, response, next) => {
 
+    // Check if the request url is 'getfile' as not all files are text/html
     if(request.url.includes('getfile') == false){
+
+        // if it is not, meaning that the request url is either getdir or / which means we need to display the 'html' ui
+        // write the head
         response.writeHead(200, { 'Content-Type': 'text/html' });
     }
     
@@ -47,9 +51,13 @@ app.get('/', (request, response) => {
 
     __getcontents__(__from_dir, dir_log)
     setTimeout(() => {
+
+        // Write as HTML
         for(let i = 0; i < __dir_contents__.length; i++){
             response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
         }
+
+        // End the response
         response.end(`${__dir_contents__.length} item(s) found in this directory!`);
     }, 5);
 })
@@ -58,8 +66,12 @@ app.get('/getdir', (request, response) => {
     __getcontents__(__from_dir + "/" + request.query.d, dir_log);
     setTimeout(() => {
         for(let i = 0; i < __dir_contents__.length; i++){
+
+            // Write as HTML
             response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
         }
+
+        // End the response!
         response.end(`${__dir_contents__.length} item(s) found in this directory!`);
     }, 5);
 })

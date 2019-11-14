@@ -32,9 +32,7 @@ app.use((request, response, next) => {
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
 
     // dir_log[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-    if (request.url.includes('get') || request.url == "/") {
-        count++
-    }
+    count++
 
     // For GET root
     if (request.url == "/") {
@@ -64,7 +62,7 @@ app.get('/', (request, response) => {
 
         // End the response
         response.end(`${__dir_contents__.length} item(s) found in this directory!`);
-    }, 5);
+    }, 10);
 })
 
 app.get('/getdir', (request, response) => {
@@ -78,7 +76,7 @@ app.get('/getdir', (request, response) => {
 
         // End the response!
         response.end(`${__dir_contents__.length} item(s) found in this directory!`);
-    }, 5);
+    }, 10);
 })
 
 app.get('/getfile', (request, response) => {
@@ -106,7 +104,7 @@ app.get('/info', (request, response) => {
     `)
 
         response.end()
-    }, 5);
+    }, 10);
 })
 
 // Run on PRIVATE IP

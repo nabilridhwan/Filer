@@ -15,6 +15,7 @@ let count = 0;
 
 // It will take the project folder and search inside "storage" dir
 let __from_dir = __dirname + "/storage"
+
 app.use((request, response, next) => {
 
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
@@ -52,7 +53,7 @@ app.get('/dir/', (request, response) => {
 })
 
 app.get('/file/', (request, response) => {
-  response.sendFile(__from_dir + "/" + request.query.f)
+    response.sendFile(__from_dir + "/" + request.query.f)
 })
 
 // Run on PRIVATE IP
@@ -68,6 +69,7 @@ network.get_private_ip(function (err, ip) {
 
 // Function to get contents of the directory
 function __getcontents__(path, input_dir_history) {
+
     // Empty the dir_contents
     __dir_contents__ = [];
 
@@ -90,18 +92,6 @@ function __getcontents__(path, input_dir_history) {
 
             // Loop through the items
             for (let i = 0; i < items.length; i++) {
-              
-    // Read the directory for both files and directories
-    fs.readdir(path, (err, items) => {
-
-        // Empty the dir_contents
-        __dir_contents__ = [];
-
-        // If the items found inside is not empty ['file1', 'file2']
-        if (items.length !== 0) {
-
-            // Loop through the items
-            for (let i = 1; i < items.length; i++) {
 
                 // Check if the items inside are files or direcotyr
                 fs.readdir("./" + input_dir_history[count] + "/" + items[i], (err, inner_dir_test) => {
@@ -135,6 +125,7 @@ function __getcontents__(path, input_dir_history) {
                         }
 
                         // as you see above, input_dir_history[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
+
                     }
                 })
             }

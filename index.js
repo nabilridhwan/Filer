@@ -2,6 +2,7 @@ let network = require('network');
 let express = require('express');
 let fs = require('fs');
 let app = express();
+let os = require('os')
 
 const port = 3030;
 
@@ -19,17 +20,21 @@ let __from_dir = __dirname + "/storage"
 app.use((request, response, next) => {
 
     // Check if the request url is 'getfile' as not all files are text/html
-    if(request.url.includes('getfile') == false){
+    if (request.url.includes('getfile') == false) {
 
         // if it is not, meaning that the request url is either getdir or / which means we need to display the 'html' ui
         // write the head
-        response.writeHead(200, { 'Content-Type': 'text/html' });
+        response.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
     }
-    
+
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
 
     // dir_log[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-    count++
+    if (request.url.includes('get') || request.url == "/") {
+        count++
+    }
 
     // For GET root
     if (request.url == "/") {
@@ -53,7 +58,7 @@ app.get('/', (request, response) => {
     setTimeout(() => {
 
         // Write as HTML
-        for(let i = 0; i < __dir_contents__.length; i++){
+        for (let i = 0; i < __dir_contents__.length; i++) {
             response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
         }
 
@@ -65,7 +70,7 @@ app.get('/', (request, response) => {
 app.get('/getdir', (request, response) => {
     __getcontents__(__from_dir + "/" + request.query.d, dir_log);
     setTimeout(() => {
-        for(let i = 0; i < __dir_contents__.length; i++){
+        for (let i = 0; i < __dir_contents__.length; i++) {
 
             // Write as HTML
             response.write(`[${__dir_contents__[i].type.toUpperCase()}] ${__dir_contents__[i].name} <a href="${__dir_contents__[i].html_link}">Link</a> <br>`);
@@ -78,6 +83,30 @@ app.get('/getdir', (request, response) => {
 
 app.get('/getfile', (request, response) => {
     response.sendFile(__from_dir + "/" + request.query.f)
+})
+
+app.get('/info', (request, response) => {
+
+    let size = 0;
+    require('du')(__from_dir, function (err, totalsize) {
+        size = totalsize
+    })
+
+    setTimeout(() => {
+        response.write(`
+
+    <h1>Host Information</h1>
+    <ul>
+        <li>OS Architechture: ${os.arch}</li>
+        <li>OS Platform: ${os.platform()}</li>
+        <li>OS Type: ${os.type()}</li>
+        <li>OS Release: ${os.release()}</li>
+        <li>Total file size (in 'storage'): ${size} bytes or ${size / (10*10*10*10*10*10)} MiB</li>
+    </ul>
+    `)
+
+        response.end()
+    }, 5);
 })
 
 // Run on PRIVATE IP
@@ -135,7 +164,7 @@ function __getcontents__(path, input_dir_history) {
                             "name": items[i],
                             "type": filetype,
                             "full_path": inner_dir,
-                            "html_link":  `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`,
+                            "html_link": `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`,
                             "link": {
                                 "dir": null,
                                 "file": `http://${server_on}/getfile?f=${input_dir_history[count]}/${items[i]}`

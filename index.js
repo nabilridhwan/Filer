@@ -88,17 +88,17 @@ app.get('/directory', (request, response) => {
             </style>
         </head>`)
 
-        response.write(`<h1>${dir_log[count]}</h1>`)
-        response.write(`[<a href="/">DIR</a>] /<br>`);
+    response.write(`<h1>${dir_log[count]}</h1>`)
+    response.write(`[<a href="/">DIR</a>] /<br>`);
 
     setTimeout(() => {
         for (let i = 0; i < __dir_contents__.length; i++) {
 
             // If the item is a dir:
             // TEMP REMOVE
-            if(__dir_contents__[i].type == "dir"){
+            if (__dir_contents__[i].type == "dir") {
                 response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
-            }else{
+            } else {
                 response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] <a href="${__dir_contents__[i].open_html_link}">${__dir_contents__[i].name}</a><br>`);
             }
         }
@@ -111,9 +111,9 @@ app.get('/directory', (request, response) => {
 app.get('/open_file', (request, response) => {
     let t = request.query.t.toUpperCase();
 
-    if(t == "OPEN"){
+    if (t == "OPEN") {
         response.sendFile(__from_dir + "/" + request.query.f)
-    }else{
+    } else {
         response.download(__from_dir + "/" + request.query.f, request.query.f)
     }
 })

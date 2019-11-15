@@ -1,13 +1,14 @@
-let network = require('network');
 let express = require('express');
 let fs = require('fs');
 let app = express();
-let os = require('os')
 
+const IP_ADDRESS = require('ip').address()
 const PORT = 3030;
 
 // The IP and PORT is stored here
-let server_on = null;
+let server_on = `${IP_ADDRESS}:${PORT}`
+
+console.log(IP_ADDRESS)
 
 // Current directory contents
 let __dir_contents__ = [];
@@ -117,24 +118,11 @@ app.get('/open_file', (request, response) => {
         response.download(__from_dir + "/" + request.query.f, request.query.f)
     }
 })
-
-app.get('/stop', (request, response) => {
-    throw new Error('Stop signal received!')
-})
-
-
-// Run on PRIVATE IP
-network.get_private_ip(function (err, ip) {
-
     // Listen on the private ip and PORT
-    app.listen(PORT, ip, () => {
-        server_on = `${ip}:${PORT}`
-        log_text.push(`Listening on: ${server_on}`)
-
+    app.listen(PORT, () => {
+        console.log(`Listening on: ${server_on} `);
         __getcontents__(__from_dir, dir_log)
     })
-})
-
 
 // Function to get contents of the directory
 function __getcontents__(path, input_dir_history) {

@@ -1,20 +1,18 @@
-# Filer (v3.2.0)
+# Filer (v3.2.1)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v3.2.0)
--	Added support for android! ([Installation/Setup Tutorial](#android-support-new))
--   Replaced `network` dependency with `ip` so that android is supported!
--	Removed the argument that is needed to be given when running the program. So, instead of: `node index.js ./`, its `node index.js` and the default folder that is hosted is the root folder where the index.js file is
+## Changelog (v3.2.1)
+-	Better logging! (Logged correct things at the right time)
+-	Removed a logging statement that logged the Private IP Address that was used in debugging!
 
 ## Bugs:
--	Some files (when trying to open) may download the file instead.
+-	Some files (when trying to open) may download the file instead. (Persistent bug!)
 
 # Android support! (NEW!)
 -   I have added support for Android and no root is needed.
-
 ## Installation / Running
 -   Install `termux` on your Android device
 -   Open `termux` and install necessary packages (`NodeJS` and `git`)

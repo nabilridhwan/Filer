@@ -8,8 +8,6 @@ const PORT = 3030;
 // The IP and PORT is stored here
 let server_on = `${IP_ADDRESS}:${PORT}`
 
-console.log(IP_ADDRESS)
-
 // Current directory contents
 let __dir_contents__ = [];
 let dir_log = ["/"]
@@ -20,8 +18,7 @@ let log_text = [];
 
 // It will take the project folder and search inside "storage" dir
 
-let __from_dir = __dirname + "/" + process.argv[2]
-log_text.push(`From Directory: ${__from_dir}`)
+console.log(`From Directory: ${__dirname}`)
 
 app.use((request, response, next) => {
 
@@ -47,7 +44,6 @@ app.use((request, response, next) => {
 })
 
 app.get('/', (request, response) => {
-
     // Redirect to the directory endpoint with query parameter d pointing to root folder
     response.redirect("/directory?d=./")
 })
@@ -58,9 +54,9 @@ app.get('/directory', (request, response) => {
     });
 
     if (request.query.d == "./") {
-        __getcontents__(__from_dir, dir_log)
+        __getcontents__(__dirname, dir_log)
     } else {
-        __getcontents__(__from_dir + "/" + request.query.d, dir_log);
+        __getcontents__(__dirname + "/" + request.query.d, dir_log);
     }
 
     response.write(`
@@ -113,15 +109,15 @@ app.get('/open_file', (request, response) => {
     let t = request.query.t.toUpperCase();
 
     if (t == "OPEN") {
-        response.sendFile(__from_dir + "/" + request.query.f)
+        response.sendFile(__dirname + "/" + request.query.f)
     } else {
-        response.download(__from_dir + "/" + request.query.f, request.query.f)
+        response.download(__dirname + "/" + request.query.f, request.query.f)
     }
 })
 // Listen on the private ip and PORT
 app.listen(PORT, () => {
     console.log(`Listening on: ${server_on} `);
-    __getcontents__(__from_dir, dir_log)
+    __getcontents__(__dirname, dir_log)
 })
 
 // Function to get contents of the directory
@@ -148,7 +144,7 @@ function __getcontents__(path, input_dir_history) {
                 // C:\Users\nabil\Documents\mailpushserver/storage//personal/images/visualres2.png
                 // After /storage/ is inpput_dir_history
                 // The last / is items[i]
-                let inner_dir = __from_dir + input_dir_history[count] + "/" + items[i];
+                let inner_dir = __dirname + input_dir_history[count] + "/" + items[i];
 
                 // Check if the items inside are files or direcotyr
                 fs.readdir(inner_dir, (err, inner_dir_test) => {

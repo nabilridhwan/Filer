@@ -1,12 +1,14 @@
 let express = require('express');
 let fs = require('fs');
 let app = express();
-let os = require('os')
 
+const IP_ADDRESS = require('ip').address()
 const PORT = 3030;
 
 // The IP and PORT is stored here
-let server_on = "127.0.0.1:" + PORT
+let server_on = `${IP_ADDRESS}:${PORT}`
+
+console.log(IP_ADDRESS)
 
 // Current directory contents
 let __dir_contents__ = [];

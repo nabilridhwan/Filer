@@ -1,35 +1,45 @@
-# Filer (v3.0.1)
-A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.
+# Filer (v3.2.0)
+A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
-## Changelog(s) (v3.0.1):
--   Changes are made to accomodate folders with a lot of files inside.
-    -   Response is only sent back after 200ms as the server need to get the directory contents first!
+## Note
+-   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
+
+## Changelog (v3.2.0)
+-	Added support for android! ([Installation/Setup Tutorial](#android-support-new))
+-   Replaced `network` dependency with `ip` so that android is supported!
+-	Removed the argument that is needed to be given when running the program. So, instead of: `node index.js ./`, its `node index.js` and the default folder that is hosted is the root folder where the index.js file is
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead.
--   When passing in the argument for the 'root' folder of the server. Using any other directory than any directory within the project folder will cause it to server to crash upon starting. So: `node index.js C:\Users\username\Downloads` would not work but `node index.js ./` will work as it is at the root folder of the project.
 
-# Setup
+# Android support! (NEW!)
+-   I have added support for Android and no root is needed.
 
-## Requirements
--   24/7 Uptime PC (Ideally, because you want access to your files 24/7)
--   Git (To clone the repo)
--   NodeJS (The server is powered by Javascript)
--   npm (To install dependencies)
-
-## Installation
+## Installation / Running
+-   Install `termux` on your Android device
+-   Open `termux` and install necessary packages (`NodeJS` and `git`)
+    -   `pkg install nodejs git`
+-   Follow the instruction(s) below:
 ```bash
 git clone [GIT_REPO_LINK]
 cd ./Filer
 npm install # Install all dependencies
-node index.js [ROOT_FOLDER] # Refer to example below
-# For example: `node index.js ./personal/`
-```
-## After installing and running...
--   The console will output something like: `Listening on: 127.0.0.1:3000`
--   Head over to the address in any browser
--   The contents of the root folder will appear on the screen!
+node index.js
 
+# Example output:
+# Listening on: 192.168.0.1:3030
+```
+
+# Installation
+```bash
+git clone [GIT_REPO_LINK]
+cd ./Filer
+npm install # Install all dependencies
+node index.js
+
+# Example output:
+# Listening on: 192.168.0.1:3030
+```
 # Memo(s)
 ## Why make this?
 I wanted to create my own knock-off 'cloud' storage. So I created this! Any file placed within the root folder specified will be fully accesible to other devices on the same local network. For example: if I uploaded a .png file to the root folder. My phone can access the item if its on the same network connection as the host (my computer).

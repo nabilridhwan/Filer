@@ -1,8 +1,6 @@
-let network = require('network');
 let express = require('express');
 let fs = require('fs');
 let app = express();
-let os = require('os')
 
 const PORT = 3030;
 

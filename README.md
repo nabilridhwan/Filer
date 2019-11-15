@@ -1,19 +1,9 @@
-# Filer (v3.0.0)
+# Filer (v3.0.1)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.
 
-## Changelog(s) (v3.0.0):
--   More verbose logging at the console.
--	Visiting the / endpoint will redirect you to the directory endpoint pointing to the root folder.
--	Users can select to OPEN the file (By clicking on a new anchor tag which says the file name or download by clicking the anchor tag which shows the filetype
--	There is now a header (h1) stating the current directory you are in
--	Added temporary styling (font and colours)
--	Now, directory names will display with `./` at the front
--	Removed /info endpoint.
--	Now files are downloaded to the device upon clicking the anchor tag. (Instead of Opening it).
--	Now instead of console.log-ing everything, each log text is pushed to an array which is later logged out by joining the items in the array.
--	Added 'ROOT' directory anchor tag
--	The server will be over HTTP and there is no plans of implementing HTTPS. Implementing HTTPS is up to the user.
--   Now, downloading the file will download with its file name instead of its endpoint `welcome.txt` instead of `open_file.txt`
+## Changelog(s) (v3.0.1):
+-   Changes are made to accomodate folders with a lot of files inside.
+    -   Response is only sent back after 200ms as the server need to get the directory contents first!
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead.

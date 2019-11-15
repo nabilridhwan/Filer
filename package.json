@@ -1,6 +1,6 @@
 {
   "name": "filer",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.",
   "main": "index.js",
   "dependencies": {

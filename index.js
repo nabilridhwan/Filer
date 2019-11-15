@@ -2,6 +2,7 @@ let network = require('network');
 let express = require('express');
 let fs = require('fs');
 let app = express();
+let os = require('os')
 
 const PORT = 3030;
 
@@ -90,6 +91,7 @@ app.get('/directory', (request, response) => {
         for (let i = 0; i < __dir_contents__.length; i++) {
 
             // If the item is a dir:
+            // TEMP REMOVE
             if(__dir_contents__[i].type == "dir"){
                 response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
             }else{
@@ -99,7 +101,7 @@ app.get('/directory', (request, response) => {
 
         // End the response!
         response.end(`${__dir_contents__.length} item(s) found in this directory`);
-    }, 5);
+    }, 200);
 })
 
 app.get('/open_file', (request, response) => {
@@ -131,14 +133,14 @@ function __getcontents__(path, input_dir_history) {
     // Empty the dir_contents
     __dir_contents__ = [];
 
+
+
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
 
         log_text.push(`Step Back Redirect Link: http://${server_on}/directory?d=${input_dir_history[count-1]}`)
         log_text.push(`Length of item inside the current directory: ${items.length}`)
         log_text.push(`\n ==============================================`)
-
-        console.log(log_text.join("\n"))
 
         // If the items found inside is not empty ['file1', 'file2']
         if (items.length > 0) {

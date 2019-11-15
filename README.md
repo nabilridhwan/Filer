@@ -1,7 +1,25 @@
-# Filer (v2.2.0)
+# Filer (v3.0.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.
 
-# Usage
+## Changelog(s) (v3.0.0):
+-   More verbose logging at the console.
+-	Visiting the / endpoint will redirect you to the directory endpoint pointing to the root folder.
+-	Users can select to OPEN the file (By clicking on a new anchor tag which says the file name or download by clicking the anchor tag which shows the filetype
+-	There is now a header (h1) stating the current directory you are in
+-	Added temporary styling (font and colours)
+-	Now, directory names will display with `./` at the front
+-	Removed /info endpoint.
+-	Now files are downloaded to the device upon clicking the anchor tag. (Instead of Opening it).
+-	Now instead of console.log-ing everything, each log text is pushed to an array which is later logged out by joining the items in the array.
+-	Added 'ROOT' directory anchor tag
+-	The server will be over HTTP and there is no plans of implementing HTTPS. Implementing HTTPS is up to the user.
+-   Now, downloading the file will download with its file name instead of its endpoint `welcome.txt` instead of `open_file.txt`
+
+## Bugs:
+-	Some files (when trying to open) may download the file instead.
+-   When passing in the argument for the 'root' folder of the server. Using any other directory than any directory within the project folder will cause it to server to crash upon starting. So: `node index.js C:\Users\username\Downloads` would not work but `node index.js ./` will work as it is at the root folder of the project.
+
+# Setup
 
 ## Requirements
 -   24/7 Uptime PC (Ideally, because you want access to your files 24/7)
@@ -21,13 +39,6 @@ node index.js [ROOT_FOLDER] # Refer to example below
 -   The console will output something like: `Listening on: 127.0.0.1:3000`
 -   Head over to the address in any browser
 -   The contents of the root folder will appear on the screen!
-
-# Changelogs (v2.2.0)
--   Makeshift User Interface for users to interact with the server.
--	To run, now the user must pass in an argument of the root folder for the server. For example: `node index.js ./personal/`
--	Updated `/info` endpoint with correct display of information
--	Now, the `type` of item is an anchor tag which when clicked is the same as clicking the endpoint link to go to the directory or open the file [UI].
--   Server still runs on HTTP! Please do not store sensitive information within your root folder.
 
 # Memo(s)
 ## Why make this?

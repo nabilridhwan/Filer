@@ -121,7 +121,7 @@ app.get('/open_file', (request, response) => {
 
     // Listen on the private ip and PORT
     app.listen(PORT, () => {
-        console.log(`Listening on: ${server_on}`);
+        console.log(`Listening on: ${server_on} `);
         __getcontents__(__from_dir, dir_log)
     })
 

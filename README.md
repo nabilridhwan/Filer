@@ -13,6 +13,7 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 -	Now instead of console.log-ing everything, each log text is pushed to an array which is later logged out by joining the items in the array.
 -	Added 'ROOT' directory anchor tag
 -	The server will be over HTTP and there is no plans of implementing HTTPS. Implementing HTTPS is up to the user.
+-   Now, downloading the file will download with its file name instead of its endpoint `welcome.txt` instead of `open_file.txt`
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead.

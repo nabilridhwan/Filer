@@ -118,6 +118,11 @@ app.get('/open_file', (request, response) => {
     }
 })
 
+app.get('/stop', (request, response) => {
+    throw new Error('Stop signal received!')
+})
+
+
 // Run on PRIVATE IP
 network.get_private_ip(function (err, ip) {
 

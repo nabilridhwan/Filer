@@ -4,7 +4,7 @@ let fs = require('fs');
 let app = express();
 let os = require('os')
 
-const port = 3030;
+const PORT = 3030;
 
 // The IP and PORT is stored here
 let server_on = null;
@@ -14,106 +14,114 @@ let __dir_contents__ = [];
 let dir_log = ["/"]
 let count = 0;
 
+// Log text output
+let log_text = [];
+
 // It will take the project folder and search inside "storage" dir
 
 let __from_dir = __dirname + "/" + process.argv[2]
-console.log(`From Directory: ${__from_dir}`)
+log_text.push(`From Directory: ${__from_dir}`)
 
 app.use((request, response, next) => {
 
-    // Check if the request url is 'open_file' as not all files are text/html
-    if (request.url.includes('open_file') == false) {
-
-        // if it is not, meaning that the request url is either directory or / which means we need to display the 'html' ui
-        // write the head
-        response.writeHead(200, {
-            'Content-Type': 'text/html'
-        });
-    }
+    // Logging!
+    log_text.push(`GET: ${request.url}`)
+    log_text.push(`Query (d): ${request.query.d}`)
+    log_text.push(`Is req url == /?:  ${request.url === "/"}`)
+    log_text.push(`Directory log: ${JSON.stringify(dir_log)}`)
+    log_text.push(`Current Directory: ${JSON.stringify(dir_log[count])}`)
+    log_text.push(`Step Back Directory: ${JSON.stringify(dir_log[count-1])}`)
 
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
-
     // dir_log[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
     count++
 
-    // For GET root
     if (request.url === "/") {
-
-        // Push '/'
         dir_log.push("/")
     } else {
-
-        // Push the directory query (d)
         dir_log.push(request.query.d)
     }
 
-    console.log(`Directory log: ${JSON.stringify(dir_log)}`)
-    console.log(`Current Directory: ${JSON.stringify(dir_log[count])}`)
     next();
 })
 
 app.get('/', (request, response) => {
 
-    __getcontents__(__from_dir, dir_log)
-    setTimeout(() => {
-
-        // Write as HTML
-        for (let i = 0; i < __dir_contents__.length; i++) {
-            response.write(`[<a href="${__dir_contents__[i].html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
-        }
-
-        // End the response
-        response.end(`${__dir_contents__.length} item(s) found in this directory!`);
-    }, 5);
+    // Redirect to the directory endpoint with query parameter d pointing to root folder
+    response.redirect("/directory?d=./")
 })
 
 app.get('/directory', (request, response) => {
-    __getcontents__(__from_dir + "/" + request.query.d, dir_log);
+    response.writeHead(200, {
+        'Content-Type': 'text/html'
+    });
+
+    if (request.query.d == "./") {
+        __getcontents__(__from_dir, dir_log)
+    } else {
+        __getcontents__(__from_dir + "/" + request.query.d, dir_log);
+    }
+
+    response.write(`
+        <head>
+            <style>
+
+                @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
+                body{
+                    color: black;
+                    font-family: 'Roboto Mono', monospace;
+                }
+
+                a{
+                    color:black;
+                    background: yellow;
+                }
+
+                h1,h2,h3,h4,h5,h6{
+                    font-weight: 400;
+                }
+            </style>
+        </head>`)
+
+        response.write(`<h1>${dir_log[count]}</h1>`)
+        response.write(`[<a href="/">DIR</a>] /<br>`);
+
     setTimeout(() => {
         for (let i = 0; i < __dir_contents__.length; i++) {
 
-            // Write as HTML
-            response.write(`[<a href="${__dir_contents__[i].html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
+            // If the item is a dir:
+            if(__dir_contents__[i].type == "dir"){
+                response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
+            }else{
+                response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] <a href="${__dir_contents__[i].open_html_link}">${__dir_contents__[i].name}</a><br>`);
+            }
         }
 
         // End the response!
-        response.end(`${__dir_contents__.length} item(s) found in this directory!`);
+        response.end(`${__dir_contents__.length} item(s) found in this directory`);
     }, 5);
 })
 
 app.get('/open_file', (request, response) => {
-    response.sendFile(__from_dir + "/" + request.query.f)
-})
+    let t = request.query.t.toUpperCase();
 
-app.get('/info', (request, response) => {
-
-    require('du')(__from_dir, function (err, totalsize) {
-        response.write(`
-
-        <h1>Host Information</h1>
-        <ul>
-            <li>OS Architechture: ${os.arch}</li>
-            <li>OS Platform: ${os.platform()}</li>
-            <li>OS Type: ${os.type()}</li>
-            <li>OS Release: ${os.release()}</li>
-            <li>Total file size (in 'storage'): ${totalsize} bytes or ${totalsize / 1000000} MiB</li>
-        </ul>
-    
-        <a href="/">ROOT</a>
-        `)
-        response.end()
-    })
-
-
+    if(t == "OPEN"){
+        response.sendFile(__from_dir + "/" + request.query.f)
+    }else{
+        response.download(__from_dir + "/" + request.query.f, request.query.f)
+    }
 })
 
 // Run on PRIVATE IP
 network.get_private_ip(function (err, ip) {
 
-    // Listen
-    app.listen(port, ip, () => {
-        server_on = `${ip}:${port}`
-        console.log(`Listening on: ${server_on}`)
+    // Listen on the private ip and PORT
+    app.listen(PORT, ip, () => {
+        server_on = `${ip}:${PORT}`
+        log_text.push(`Listening on: ${server_on}`)
+
+        __getcontents__(__from_dir, dir_log)
     })
 })
 
@@ -124,19 +132,14 @@ function __getcontents__(path, input_dir_history) {
     // Empty the dir_contents
     __dir_contents__ = [];
 
-    // __dir_contents__[0] = {
-    //     "name": "ROOT",
-    //     "type": "dir",
-    //     "link": {
-    //         "dir": `http://${server_on}/`,
-    //         "file": null
-    //     },
-    // }
-
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
 
-        console.log(`Length of item inside the current directory: ${items.length} \n\n`)
+        log_text.push(`Step Back Redirect Link: http://${server_on}/directory?d=${input_dir_history[count-1]}`)
+        log_text.push(`Length of item inside the current directory: ${items.length}`)
+        log_text.push(`\n ==============================================`)
+
+        console.log(log_text.join("\n"))
 
         // If the items found inside is not empty ['file1', 'file2']
         if (items.length > 0) {
@@ -162,10 +165,12 @@ function __getcontents__(path, input_dir_history) {
                             "name": items[i],
                             "type": filetype,
                             "full_path": inner_dir,
-                            "html_link": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}`,
+                            "download_html_link": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
+                            "open_html_link": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`,
                             "link": {
                                 "dir": null,
-                                "file": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}`
+                                "file": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
+                                "open": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`
                             },
                         }
 
@@ -174,18 +179,17 @@ function __getcontents__(path, input_dir_history) {
 
                         // IS A DIR
                         __dir_contents__[i] = {
-                            "name": items[i],
+                            "name": `./${items[i]}`,
                             "type": "dir",
                             "full_path": inner_dir,
-                            "html_link": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
+                            "download_html_link": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
+                            "open_html_link": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
                             "link": {
                                 "dir": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
                                 "file": null
                             },
                         }
-
                         // as you see above, input_dir_history[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-
                     }
                 })
             }

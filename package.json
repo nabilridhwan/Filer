@@ -4,7 +4,8 @@
   "description": "A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "network": "^0.4.1"
   },
   "devDependencies": {},
   "scripts": {

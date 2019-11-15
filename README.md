@@ -7,6 +7,7 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 ## Changelog (v3.2.1)
 -	Better logging! (Logged correct things at the right time)
 -	Removed a logging statement that logged the Private IP Address that was used in debugging!
+-	Removed the version in the html head title. Instead of `Filer v3.0.1`, now is `Filer`
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)

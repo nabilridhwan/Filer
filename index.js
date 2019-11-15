@@ -64,7 +64,7 @@ app.get('/directory', (request, response) => {
 
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Filer v3.0.1</title>
+            <title>Filer</title>
             <style>
 
                 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');

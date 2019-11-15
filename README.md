@@ -23,7 +23,7 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 git clone [GIT_REPO_LINK]
 cd ./Filer
 npm install # Install all dependencies
-node index.js
+node Filer.js
 
 # Example output:
 # Listening on: 192.168.0.1:3030
@@ -34,7 +34,7 @@ node index.js
 git clone [GIT_REPO_LINK]
 cd ./Filer
 npm install # Install all dependencies
-node index.js
+node Filer.js
 
 # Example output:
 # Listening on: 192.168.0.1:3030

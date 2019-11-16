@@ -1,0 +1,17 @@
+______ _ _
+|  ___(_) |
+| |_   _| | ___ _ __
+|  _| | | |/ _ \ '__|
+| |   | | |  __/ |
+\_|   |_|_|\___|_|
+
+
+Hi! Welcome to Filer! Rest-assured, your data is not logged to any of my servers and if I were to do so in the future, this line of text is to change.
+
+Just to note that the data is not encrypted as the Server is running over HTTP. A simple MITM attack could sniff out the data and traffic.
+
+Happy storage-ing.
+
+Regards,
+Nabil
+Developer

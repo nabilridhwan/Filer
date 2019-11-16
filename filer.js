@@ -108,7 +108,7 @@ app.get('/open_file', (request, response) => {
 })
 
 app.get('/welcome', (request, response) => {
-    response.status(200).send("Welcome to Filer!");
+    response.sendFile(__dirname + "/Public/welcome.txt")
 })
 
 if(process.env.IP !== "127.0.0.1"){

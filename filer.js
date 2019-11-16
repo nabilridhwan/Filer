@@ -89,14 +89,7 @@ app.get('/directory', (request, response) => {
 
     setTimeout(() => {
         for (let i = 0; i < __dir_contents__.length; i++) {
-
-            // If the item is a dir:
-            // TEMP REMOVE
-            if (__dir_contents__[i].type == "dir") {
-                response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] ${__dir_contents__[i].name}<br>`);
-            } else {
-                response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>] <a href="${__dir_contents__[i].open_html_link}">${__dir_contents__[i].name}</a><br>`);
-            }
+            response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>][<a href="/directory?d=${dir_log[count]}/${__dir_contents__[i].name}">DIR</a>] <a href="${__dir_contents__[i].open_html_link}">${__dir_contents__[i].name}</a><br>`);
         }
 
         // End the response!
@@ -141,12 +134,9 @@ function __getcontents__(path, input_dir_history) {
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
 
-        log_text.push(`Step Back Redirect Link: http://${server_on}/directory?d=${input_dir_history[count-1]}`)
-        log_text.push(`Length of item inside the current directory: ${items.length}`)
-        log_text.push(`\n ==============================================`)
-
         // If the items found inside is not empty ['file1', 'file2']
-        if (items.length > 0) {
+        // If the directory is empty, items will be undefined == false
+        if (items) {
 
             // Loop through the items
             for (let i = 0; i < items.length; i++) {

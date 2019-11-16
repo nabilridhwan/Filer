@@ -13,8 +13,7 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)
--	Some directories will show up as files (with the filetype being the filename).
-        -   A workaround for this is to go to the endpoint `/directory` with the query parameter of d which points to the 'File Directory'. So for example: I created a /file directory and it shows up as `[FILE] file` on the front-end. The workaround is to go to `/directory?d=./file`. The current directory can be found at the top with the <h1> header.
+-	Some directories will show up as files (with the filetype being the filename). A workaround for this is to go to the endpoint `/directory` with the query parameter of d which points to the 'File Directory'. So for example: I created a /file directory and it shows up as `[FILE] file` on the front-end. The workaround is to go to `/directory?d=./file`. The current directory can be found at the top with the `<h1>` header.
 
 # Android support! (NEW!)
 -   I have added support for Android and no root is needed.

@@ -30,15 +30,25 @@
         <body>
             <h1>Testing ejs f</h1>
 
-            <% dir_contents.forEach(function(item) { %>
-                [<a href="<%= item.download_html_link %>">
-                    <%= item.type.toUpperCase() %>
-                </a>]
+            <ul>
 
-                <!--TODO PASS THE DIR LOG-->
-                [<a href="/directory?d=${dir_log[count]}/${__dir_contents__[i].name}">DIR</a>]
+                <% dir_contents.forEach(function(item) { %>
+
+                <li>
+                    <a href="<%= item.download_html_link %>">
+                        [<%= item.type.toUpperCase() %>]
+                    </a>
+
+                    [<a href="/directory?d=${dir_log[count]}/${__dir_contents__[i].name}">DIR</a>]
+
+                    <%=item.name%></a>
 
 
-                <a href="<%=item.open_html_link %>">${item.name}</a>
-            <% }); %>
+                </li>
+                    <a href="<%=item.open_html_link %>">
+
+                    <br>
+                <% }); %>
+
+            </ul>
         </body>

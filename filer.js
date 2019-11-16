@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // The IP and PORT is stored here
-let server_on = `${process.env.IP}:${process.env.PORT}`
+let server_on = "";
 
 // Current directory contents
 let __dir_contents__ = [];
@@ -74,16 +74,18 @@ app.get("/test", (request, response) => {
     response.render("pages/index", {dir_contents: __dir_contents__})
 })
 
-if(process.env.IP !== "127.0.0.1"){
-    // Listen on the private ip and PORT
-    app.listen(process.env.PORT, process.env.IP, () => {
-        console.log(`HOSTING ON OTHER SERVER: Listening on: ${server_on} `);
+if(!process.env.IP || !process.env.PORT){
+    // Listen on the PRIVATE IP and PORT 3030
+    app.listen(3030, require('ip').address(), () => {
+        server_on = `${require('ip').address()}:3030`
+        console.log(`HOSTING ON LOCALLY: Listening on: ${server_on} `);
         __getcontents__(__dirname, dir_log)
     })
 }else{
-    // Listen on the private ip and PORT
+    // Listen on the process.env.IP and PORT
+    server_on = `${process.env.IP}:${process.env.PORT}`
     app.listen(process.env.PORT, () => {
-        console.log(`HOSTING LOCALLY: Listening on: ${server_on} `);
+        console.log(`HOSTING OTHER SERVER: Listening on: ${server_on} `);
         __getcontents__(__dirname, dir_log)
     })
 }

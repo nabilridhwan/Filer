@@ -1,11 +1,11 @@
-# Filer (v3.3.0)
+# Filer (v4.0.0-internal_beta)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v3.3.0)
--	Directories with empty contents will no longer crash the server.
+## Changelog (v4.0.0-internal_beta)
+-	Added EJS Templating. (More reliable loading times)
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)

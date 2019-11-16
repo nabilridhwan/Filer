@@ -1,14 +1,24 @@
-# Filer (v3.3.0)
+# Filer (v4.0.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v3.3.0)
--	Directories with empty contents will no longer crash the server.
+## Changelog(s) (v4.0.0)
+-	Instead of relying on response.write() for writing HTML. The site now uses EJS Templating for the front-end. (More reliable front-end solution)
+-	Removed /test endpoint
+-	Added a backend API. New endpoint: `/api/directory?d=(directory)`. This endpoint will return a JSON response containing the directory contents.
+-	New layout (front-end)
+	-	`[X]` - (Attempts to) Open the file in the browser
+	-	`[FILE NAME]` - Open the directory (opening a directory on a file will return an error)
+	-	`[↓]` - Downloads the file (with the correct name)
+-	Deleted welcome.txt as the /welcome endpoint now serves a proper render of the welcome ejs file
+-	Instead of all the EJS files being inside views/pages, it is now stored in the views folder
+-	Updated the index page.
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)
+-	Some files, when downloading will give a 'NotFound' error!
 
 # Android support! (NEW!)
 -   I have added support for Android and no root is needed.

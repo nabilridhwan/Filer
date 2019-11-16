@@ -4,6 +4,7 @@
   "description": "A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine.",
   "main": "Filer.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "ip": "^1.1.5"
   },

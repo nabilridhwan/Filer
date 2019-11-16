@@ -1,19 +1,14 @@
-# Filer (v3.2.2)
+# Filer (v3.3.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v3.2.2)
--	Added support for hosting on servers such as c9 and heroku.
--	Renamed `Filer.js` to `filer.js`
--	Removed welcome.txt
--	Introduced the `/welcome` endpoint (still in the making!)
--	Updated dependencies (added dotenv) for writing custom environment variables (in hopes of using it in the future!)
+## Changelog (v3.3.0)
+-	Directories with empty contents will no longer crash the server.
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)
--	Some directories will show up as files (with the filetype being the filename). A workaround for this is to go to the endpoint `/directory` with the query parameter of d which points to the 'File Directory'. So for example: I created a /file directory and it shows up as `[FILE] file` on the front-end. The workaround is to go to `/directory?d=./file`. The current directory can be found at the top with the `<h1>` header.
 
 # Android support! (NEW!)
 -   I have added support for Android and no root is needed.

@@ -108,7 +108,7 @@ app.get('/open_file', (request, response) => {
 })
 
 app.get('/welcome', (request, response) => {
-    response.status(200).send("Welcome to Filer! Just to note, this server is connected through HTTP, everything is not encrypted, Do not keep any sensitive information as a simple MITM attack could sniff out the traffic and the data.");
+    response.sendFile(__dirname + "/Public/welcome.txt")
 })
 
 if(process.env.IP !== "127.0.0.1"){

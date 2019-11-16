@@ -49,52 +49,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/directory', (request, response) => {
-    response.writeHead(200, {
-        'Content-Type': 'text/html'
-    });
-
-    if (request.query.d == "./") {
-        __getcontents__(__dirname, dir_log)
-    } else {
-        __getcontents__(__dirname + "/" + request.query.d, dir_log);
-    }
-
-    response.write(`
-        <head>
-
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Filer</title>
-            <style>
-
-                @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
-
-                body{
-                    color: black;
-                    font-family: 'Roboto Mono', monospace;
-                }
-
-                a{
-                    color:black;
-                    background: yellow;
-                }
-
-                h1,h2,h3,h4,h5,h6{
-                    font-weight: 400;
-                }
-            </style>
-        </head>`)
-
-    response.write(`<h1>${dir_log[count]}</h1>`)
-    response.write(`[<a href="/">DIR</a>] /<br>`);
+    __getcontents__(__dirname + "/" + request.query.d, dir_log);
 
     setTimeout(() => {
-        for (let i = 0; i < __dir_contents__.length; i++) {
-            response.write(`[<a href="${__dir_contents__[i].download_html_link}">${__dir_contents__[i].type.toUpperCase()}</a>][<a href="/directory?d=${dir_log[count]}/${__dir_contents__[i].name}">DIR</a>] <a href="${__dir_contents__[i].open_html_link}">${__dir_contents__[i].name}</a><br>`);
-        }
-
-        // End the response!
-        response.end(`${__dir_contents__.length} item(s) found in this directory`);
+            response.render("pages/index", {dir_contents: __dir_contents__, dir_log: dir_log, count: count})
     }, 200);
 })
 

@@ -1,15 +1,11 @@
-# Filer (v3.2.2)
+# Filer (v3.3.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v3.2.2)
--	Added support for hosting on servers such as c9 and heroku.
--	Renamed `Filer.js` to `filer.js`
--	Removed welcome.txt
--	Introduced the `/welcome` endpoint (still in the making!)
--	Updated dependencies (added dotenv) for writing custom environment variables (in hopes of using it in the future!)
+## Changelog (v3.3.0)
+-	Directories with empty contents will no longer crash the server.
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)

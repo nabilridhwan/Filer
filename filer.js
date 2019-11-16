@@ -1,12 +1,11 @@
 let express = require('express');
 let fs = require('fs');
 let app = express();
-
-const IP_ADDRESS = require('ip').address()
-const PORT = 3030;
+const dotenv = require('dotenv');
+dotenv.config();
 
 // The IP and PORT is stored here
-let server_on = `${IP_ADDRESS}:${PORT}`
+let server_on = `${process.env.IP}:${process.env.PORT}`
 
 // Current directory contents
 let __dir_contents__ = [];
@@ -114,19 +113,30 @@ app.get('/open_file', (request, response) => {
         response.download(__dirname + "/" + request.query.f, request.query.f)
     }
 })
-// Listen on the private ip and PORT
-app.listen(PORT, () => {
-    console.log(`Listening on: ${server_on} `);
-    __getcontents__(__dirname, dir_log)
+
+app.get('/welcome', (request, response) => {
+    response.status(200).send("Welcome to Filer!");
 })
+
+if(process.env.IP !== "127.0.0.1"){
+    // Listen on the private ip and PORT
+    app.listen(process.env.PORT, process.env.IP, () => {
+        console.log(`HOSTING ON OTHER SERVER: Listening on: ${server_on} `);
+        __getcontents__(__dirname, dir_log)
+    })
+}else{
+    // Listen on the private ip and PORT
+    app.listen(process.env.PORT, () => {
+        console.log(`HOSTING LOCALLY: Listening on: ${server_on} `);
+        __getcontents__(__dirname, dir_log)
+    })
+}
 
 // Function to get contents of the directory
 function __getcontents__(path, input_dir_history) {
 
     // Empty the dir_contents
     __dir_contents__ = [];
-
-
 
     // Read the directory for both files and directories
     fs.readdir(path, (err, items) => {
@@ -159,12 +169,12 @@ function __getcontents__(path, input_dir_history) {
                             "name": items[i],
                             "type": filetype,
                             "full_path": inner_dir,
-                            "download_html_link": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
-                            "open_html_link": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`,
+                            "download_html_link": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
+                            "open_html_link": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`,
                             "link": {
                                 "dir": null,
-                                "file": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
-                                "open": `http://${server_on}/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`
+                                "file": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
+                                "open": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`
                             },
                         }
 
@@ -176,10 +186,10 @@ function __getcontents__(path, input_dir_history) {
                             "name": `./${items[i]}`,
                             "type": "dir",
                             "full_path": inner_dir,
-                            "download_html_link": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
-                            "open_html_link": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
+                            "download_html_link": `/directory?d=${input_dir_history[count]}/${items[i]}`,
+                            "open_html_link": `/directory?d=${input_dir_history[count]}/${items[i]}`,
                             "link": {
-                                "dir": `http://${server_on}/directory?d=${input_dir_history[count]}/${items[i]}`,
+                                "dir": `/directory?d=${input_dir_history[count]}/${items[i]}`,
                                 "file": null
                             },
                         }

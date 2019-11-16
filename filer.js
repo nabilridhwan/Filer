@@ -15,7 +15,8 @@ let count = 0;
 // Log text output
 let log_text = [];
 
-// It will take the project folder and search inside "storage" dir
+// set the view engine to ejs
+app.set('view engine', 'ejs');
 
 console.log(`From Directory: ${__dirname}`)
 
@@ -109,6 +110,10 @@ app.get('/open_file', (request, response) => {
 
 app.get('/welcome', (request, response) => {
     response.sendFile(__dirname + "/Public/welcome.txt")
+})
+
+app.get("/test", (request, response) => {
+    response.render("pages/index", {dir_contents: __dir_contents__})
 })
 
 if(process.env.IP !== "127.0.0.1"){

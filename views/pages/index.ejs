@@ -1,0 +1,44 @@
+<meta charset="UTF-8">
+<title>Filer Templating Test</title>
+
+<head>
+
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Filer</title>
+            <style>
+
+                @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
+                body{
+                    color: black;
+                    font-family: 'Roboto Mono', monospace;
+                }
+
+                a{
+                    color:black;
+                    background: yellow;
+                }
+
+                h1,h2,h3,h4,h5,h6{
+                    font-weight: 400;
+                }
+            </style>
+        </head>
+
+
+        <body>
+            <h1>Testing ejs f</h1>
+
+            <% dir_contents.forEach(function(item) { %>
+                [<a href="<%= item.download_html_link %>">
+                    <%= item.type.toUpperCase() %>
+                </a>]
+
+                <!--TODO PASS THE DIR LOG-->
+                [<a href="/directory?d=${dir_log[count]}/${__dir_contents__[i].name}">DIR</a>]
+
+
+                <a href="<%=item.open_html_link %>">${item.name}</a>
+            <% }); %>
+        </body>

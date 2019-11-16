@@ -1,4 +1,4 @@
-# Filer (v4.0.0-internal_beta)
+# Filer (v4.0.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 ## Note
@@ -12,6 +12,9 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 	-	`[X]` - (Attempts to) Open the file in the browser
 	-	`[FILE NAME]` - Open the directory (opening a directory on a file will return an error)
 	-	`[↓]` - Downloads the file (with the correct name)
+-	Deleted welcome.txt as the /welcome endpoint now serves a proper render of the welcome ejs file
+-	Instead of all the EJS files being inside views/pages, it is now stored in the views folder
+-	Updated the index page.
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)

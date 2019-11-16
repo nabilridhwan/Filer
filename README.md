@@ -4,11 +4,18 @@ A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's mac
 ## Note
 -   When using this tool! Please note that the connecting device must be the on the same network as the host device. (Host is the one running this tool!)
 
-## Changelog (v4.0.0-internal_beta)
--	Added EJS Templating. (More reliable loading times)
+## Changelog(s) (v4.0.0)
+-	Instead of relying on response.write() for writing HTML. The site now uses EJS Templating for the front-end. (More reliable front-end solution)
+-	Removed /test endpoint
+-	Added a backend API. New endpoint: `/api/directory?d=(directory)`. This endpoint will return a JSON response containing the directory contents.
+-	New layout (front-end)
+	-	`[X]` - (Attempts to) Open the file in the browser
+	-	`[FILE NAME]` - Open the directory (opening a directory on a file will return an error)
+	-	`[↓]` - Downloads the file (with the correct name)
 
 ## Bugs:
 -	Some files (when trying to open) may download the file instead. (Persistent bug!)
+-	Some files, when downloading will give a 'NotFound' error!
 
 # Android support! (NEW!)
 -   I have added support for Android and no root is needed.

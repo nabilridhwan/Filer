@@ -1,50 +1,33 @@
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>Welcome!</title>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
-
-        body{
-            color: black;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        a{
-            color:black;
-        }
-
-        h1,h2,h3,h4,h5,h6{
-            font-weight: 400;
-        }
-
-        ul{
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <% include ./partials/head %>
+    <% include ./partials/styles %>
 </head>
 
 
 <body>
     <h1>Welcome to Filer!</h1>
-    <p>I would like to say thank you for using Filer! Rest-assured, your data is not logged to any of my servers and if I were to do so in the future, this line of text is to change with more details of the data collection and how I process it.</p>
+    <p>Hi, I'm Nabil, the developer. I would like to say thank you for using Filer as your back-end for your storage server!</p>
 
-    <h2>Tutorial</h2>
-    <p>Every time you reach the /directory endpoint, Each item or directory in the current directory will display something like this:</p>
+    <h2>How do I use this?</h2>
+    <p>Every time you reach the /directory endpoint, Each item in the current directory will display something like this:</p>
     <h3>[X] FILENAME [↓]</h3>
-    
-    <li>The [X] Button or Link is going to try to open the FILE in the browser (works well with .txt files). However if it is not able to download, you either get an error or it will attempt to download with a totally different file name</li>
-    <li>The FILENAME Button or Link is going to try to open the DIRECTORY in the browser). However if it is not able to open the directory, you either get an error or it will attempt to download with a totally different file name</li>
-    <li>The [↓] Button or Link is going to try to open the DOWNLOAD the FILE in the browser. However if it is not able to download or you downloaded a DIRECTORY, you either get an error or it will attempt to download with a totally different file name</li>
 
+    <ol>
+        <li>The <span id="bold">[X]</span> Button or Link is going to try to open the FILE in the browser (works well with .txt files). However if it is not able to download, you either get an error or it will attempt to download with a totally different file name.</li>
 
-    <h2>Note!</h2>
-    <p>Check if the server is running over HTTPS or HTTP. If you get a prompt or a note saying that the connection to the site is not secure, This server is served over HTTP meaning that your actions are not encrypted. A simple Man-In-The-Middle (MITM) attack would be able to sniff out the traffic and data. However if there is not prompts or note saying that the connection to the site is not secured, The server is MOST LIKELY running over HTTPS (don't take my word for it! Double check!)</p>
+        <br>
 
-    <p>Once again, thanks for using Filer! <br>Regards, <br>Nabil <br>Developer</p>
+        <li>The <span id="bold">FILENAME</span> Button or Link is going to try to open the DIRECTORY in the browser. However if it is not able to open the directory or you attempted to open a directory on a FILE, you will be redirected to a new page with 0 item(s) found in the directory.</li>
+
+        <br>
+
+        <li>The <span id="bold">[↓]</span> Button or Link is going to try to open the DOWNLOAD the FILE in the browser. However if it is not able to download or you attempted to downloaded a DIRECTORY, you'll get an error which states <span id="bold">Cannot GET /open_file</span></li>
+    </ol>
+
+    <h2>Before you go off, Please Note!</h2>
+    <p>Check if the server is running over HTTPS or HTTP. If you get a prompt or a note saying that the connection to the site is not secure, This server is served over HTTP meaning that your actions are not encrypted. A simple Man-In-The-Middle (MITM) attack would be able to sniff out the traffic and data. However if there is no prompts or note saying that the connection to the site is not secured, The server is MOST LIKELY running over HTTPS (don't take my word for it! Double check!)</p>
+
+    <p>Once again, thanks for using Filer!</p>
+
+    <h6><a href="/">Back to the home page</a></h6>
 </body>

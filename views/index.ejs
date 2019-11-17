@@ -1,38 +1,14 @@
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>Filer</title>
-
-    <style>
-
-        @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
-
-        body{
-            color: black;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        a{
-            color:black;
-        }
-
-        h1,h2,h3,h4,h5,h6{
-            font-weight: 400;
-        }
-
-        ul{
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <% include ./partials/head %>
+    <% include ./partials/styles %>
 </head>
 
 
 <body>
     <h1><%= dir_log[count] %></h1>
+
+    <p>Found <%=__dir_contents__.length%> item(s) in <%=dir_log[count]%></p>
+
     <ul>
 
         <!--Only for root!-->
@@ -45,6 +21,7 @@
             <a href="<%=item.open_html_link %>">[X]</a> <a href="/directory?d=<%=dir_log[count]%>/<%=item.name%>"><%=item.name%></a> <a href="<%= item.download_html_link %>">[↓]</a> 
         </li>
         <% }); %>
-
     </ul>
+
+    <h6><a href="/welcome">View the welcome page</a></h6>
 </body>

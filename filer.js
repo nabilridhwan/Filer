@@ -1,8 +1,6 @@
 let express = require('express');
 let fs = require('fs');
 let app = express();
-const dotenv = require('dotenv');
-dotenv.config();
 
 // The IP and PORT is stored here
 let server_on = "";
@@ -12,13 +10,12 @@ let __dir_contents__ = [];
 let dir_log = ["/"]
 let count = 0;
 
-// Log text output
-let log_text = [];
+let __fromdir = __dirname + "/" + process.argv[2]
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
-console.log(`From Directory: ${__dirname}`)
+console.log(`From Directory: ${__fromdir}`)
 
 app.use((request, response, next) => {
     // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
@@ -40,7 +37,7 @@ app.get('/', (request, response) => {
 
 // To get items in directory
 app.get('/directory', (request, response) => {
-    __getcontents__(__dirname + "/" + request.query.d, dir_log);
+    __getcontents__(__fromdir + "/" + request.query.d, dir_log);
     setTimeout(() => {
         response.render("index", {
             __dir_contents__: __dir_contents__,
@@ -54,15 +51,15 @@ app.get('/directory', (request, response) => {
 app.get('/open_file', (request, response) => {
     let t = request.query.t.toLowerCase();
     if (t == "open") {
-        response.sendFile(__dirname + "/" + request.query.f)
+        response.sendFile(__fromdir + "/" + request.query.f)
     } else if(t == "download") {
-        response.download(__dirname + "/" + request.query.f, request.query.f)
+        response.download(__fromdir + "/" + request.query.f, request.query.f)
     }
 })
 
 // API BACKEND
 app.get('/api/directory', (request, response) => {
-    __getcontents__(__dirname + "/" + request.query.d, dir_log);
+    __getcontents__(__fromdir + "/" + request.query.d, dir_log);
     setTimeout(() => {
         response.send(__dir_contents__)
     }, 200);
@@ -92,7 +89,7 @@ function __getcontents__(path, input_dir_history) {
                 // C:\Users\nabil\Documents\mailpushserver/storage//personal/images/visualres2.png
                 // After /storage/ is input_dir_history
                 // The last / is items[i]
-                let inner_dir = __dirname + input_dir_history[count] + "/" + items[i];
+                let inner_dir = __fromdir + input_dir_history[count] + "/" + items[i];
 
                 // Check if the items inside are files or direcotyr
                 fs.readdir(inner_dir, (err, inner_dir_test) => {
@@ -131,14 +128,14 @@ if (!process.env.IP || !process.env.PORT) {
     // Listen on the PRIVATE IP and PORT 3030
     app.listen(3030, require('ip').address(), () => {
         server_on = `${require('ip').address()}:3030`
-        console.log(`HOSTING LOCALLY: Listening on: ${server_on} `);
-        __getcontents__(__dirname, dir_log)
+        console.log(`HOSTING LOCALLY: Listening on: http://${server_on} `);
+        __getcontents__(__fromdir, dir_log)
     })
 } else {
     // Listen on the process.env.IP and PORT
     server_on = `${process.env.IP}:${process.env.PORT}`
     app.listen(process.env.PORT, () => {
-        console.log(`HOSTING OTHER SERVER: Listening on: ${server_on} `);
-        __getcontents__(__dirname, dir_log)
+        console.log(`HOSTING OTHER SERVER: Listening on: http://${server_on} `);
+        __getcontents__(__fromdir, dir_log)
     })
 }

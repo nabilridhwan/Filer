@@ -5,23 +5,50 @@
 
 
 <body>
-    <h1><%= dir_log[count] %></h1>
-
-    <p>Found <%=__dir_contents__.length%> item(s) in <%=dir_log[count]%></p>
+    <p>
+        <%= __dircontents.length %> item(s) found
+    </p>
 
     <ul>
-
-        <!--Only for root!-->
         <li>
-            <a href="/">/</a>
+            <a href="/" class="directory">
+                <i class="fa fa-folder" aria-hidden="true"></i>
+                /
+            </a>
         </li>
 
-        <% __dir_contents__.forEach(function(item) { %>
+        <% if(path !== initial_path){ %>
         <li>
-            <a href="<%=item.open_html_link %>">[X]</a> <a href="/directory?d=<%=dir_log[count]%>/<%=item.name%>"><%=item.name%></a> <a href="<%= item.download_html_link %>">[↓]</a> 
+            <a href="/open?path=<%= step_back_dir %>&type=directory" class="directory">
+                <i class="fa fa-folder" aria-hidden="true"></i>
+                ../
+            </a>
+        </li>
+        <% } %>
+
+        <% __dircontents.forEach(function(item) { %>
+        <li>
+            <% if(item.type == "directory"){ %>
+
+            <a class="<%= item.type %>" href="<%=item.open_html_link%>">
+                <i class="fa fa-folder" aria-hidden="true"></i>
+                <%=item.name%>
+            </a>
+
+            <% }else{ %>
+
+            <a class="<%= item.type %>" href="<%=item.open_html_link%>">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <%=item.name%>
+            </a>
+
+            <% } %>
         </li>
         <% }); %>
     </ul>
-
-    <h6><a href="/welcome">View the welcome page</a></h6>
+    <h6>
+        <a href="https://github.com/nabilridhwan/Filer">
+            Read the Tutorial on Github
+        </a>
+    </h6>
 </body>

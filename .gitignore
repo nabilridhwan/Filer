@@ -3,7 +3,7 @@
 #  For node_modules
 *node_modules*
 # For personal folder
-*personal*
+*private*
 *temp*
 .env
 *files*

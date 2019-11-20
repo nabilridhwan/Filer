@@ -1,9 +1,10 @@
-# Filer (v4.0.1)
+# Filer (v5.0.0)
 A 'cloud' file-explorer in NodeJS that utilizes the disk-space on the host's machine to transfer or download files from the host machine.
 
 # Contents
 -	Changelog(s) can be found [here](CHANGELOG.md).
--	Installation tutorial(s) can be found [here](INSTALLATION.md).
+-	Tutorial can be found [here](TUTORIAL.md).
+-	Installation instruction(s) can be found [here](INSTALLATION.md).
 
 # Note
 -   When using this program, Please note that the connecting device must be the on the same network as the host device. (Host is the one running this program!)

@@ -1,127 +1,103 @@
-let express = require('express');
-let fs = require('fs');
-let app = express();
+const express = require('express');
+const fs = require('fs');
+const app = express();
 
 // The IP and PORT is stored here
 let server_on = "";
 
 // Current directory contents
-let __dir_contents__ = [];
-let dir_log = ["/"]
-let count = 0;
-
-let __fromdir = __dirname + "/" + process.argv[2]
-
+let __fromdir = process.argv[2]
 // set the view engine to ejs
 app.set('view engine', 'ejs');
-
 console.log(`From Directory: ${__fromdir}`)
-
-app.use((request, response, next) => {
-    // Count is increase because every directory that the user visits is pushed to dir_log, so if the user visited that page for the 39th time, so its current directory is dir_log[count]
-    // dir_log[count] is to get the current latest directory, the directory that is pushed is all including its parent(s)
-    count++
-
-    if (request.url === "/") {
-        dir_log.push("/")
-    } else {
-        dir_log.push(request.query.d)
-    }
-    next();
-})
 
 app.get('/', (request, response) => {
     // Redirect to the directory endpoint with query parameter d pointing to root folder
-    response.redirect("/directory?d=./")
-})
-
-// To get items in directory
-app.get('/directory', (request, response) => {
-    __getcontents__(__fromdir + "/" + request.query.d, dir_log);
-    setTimeout(() => {
-        response.render("index", {
-            __dir_contents__: __dir_contents__,
-            dir_log: dir_log,
-            count: count
-        })
-    }, 200);
+    response.redirect(`/open?path=${__fromdir}&type=directory`)
 })
 
 // To get a file
-app.get('/open_file', (request, response) => {
-    let t = request.query.t.toLowerCase();
-    if (t == "open") {
-        response.sendFile(__fromdir + "/" + request.query.f)
-    } else if(t == "download") {
-        response.download(__fromdir + "/" + request.query.f, request.query.f)
+app.get('/open', (request, response) => {
+
+    let path = request.query.path;
+    let type = request.query.type;
+
+    if (path.includes(process.argv[2]) === false) {
+        response.render("forbidden")
+    } else {
+        if (type == "directory") {
+            __getcontents__(path)
+                .then(d => {
+                    response.render("index", {
+                        __dircontents: d,
+                        path: path,
+                        step_back_dir: path.split("/").slice(0, path.split("/").length - 1).join("/"),
+                        initial_path: __fromdir
+                    })
+                })
+        }
+    }
+
+    if (type == "file") {
+        response.download(path, (err) => {
+            if (err) console.log(err)
+        })
     }
 })
 
-// API BACKEND
-app.get('/api/directory', (request, response) => {
-    __getcontents__(__fromdir + "/" + request.query.d, dir_log);
-    setTimeout(() => {
-        response.send(__dir_contents__)
-    }, 200);
-})
-
-app.get('/welcome', (request, response) => {
-    response.render("welcome")
-})
-
 // Function to get contents of the directory
-function __getcontents__(path, input_dir_history) {
+let __getcontents__ = (path) => {
+    return new Promise((resolve, reject) => {
 
-    // Empty the dir_contents
-    __dir_contents__ = [];
+        let contents = []
 
-    // Read the directory for both files and directories
-    fs.readdir(path, (err, items) => {
+        // Empty the dir_contents
+        // Read the directory for both files and directories
+        fs.readdir(path, (err, items) => {
+            if (err) console.log(err)
 
-        // If the items found inside is not empty ['file1', 'file2']
-        // If the directory is empty, items will be undefined == false
+            if (items.length !== 0) {
+                items.forEach((item, n) => {
+                    get_html_link(path + "/" + item)
+                        .then(link => {
 
-        if (items) {
+                            if (link.includes("type=directory")) {
+                                contents.push({
+                                    "name": `/${item}`,
+                                    "open_html_link": link,
+                                    "type": "directory"
+                                })
+                            } else {
+                                contents.push({
+                                    "name": `${item}`,
+                                    "open_html_link": link,
+                                    "type": "file"
+                                })
+                            }
 
-            // Loop through the items
-            for (let i = 0; i < items.length; i++) {
+                            if (contents.length == items.length) resolve(contents)
 
-                // C:\Users\nabil\Documents\mailpushserver/storage//personal/images/visualres2.png
-                // After /storage/ is input_dir_history
-                // The last / is items[i]
-                let inner_dir = __fromdir + input_dir_history[count] + "/" + items[i];
-
-                // Check if the items inside are files or direcotyr
-                fs.readdir(inner_dir, (err, inner_dir_test) => {
-
-                    // Not a dir items return undefined!
-                    if (!inner_dir_test) {
-
-                        let filetype = items[i].split(".")[items[i].split(".").length - 1]
-
-                        // NOT A DIR
-                        __dir_contents__[i] = {
-                            "name": items[i],
-                            "type": filetype,
-                            "download_html_link": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=download`,
-                            "open_html_link": `/open_file?f=${input_dir_history[count]}/${items[i]}&t=open`,
-                        }
-                    } else {
-
-                        // IS A DIR
-                        __dir_contents__[i] = {
-                            "name": `./${items[i]}`,
-                            "type": "dir",
-                            "download_html_link": `/directory?d=${input_dir_history[count]}/${items[i]}`,
-                            "open_html_link": `/directory?d=${input_dir_history[count]}/${items[i]}`,
-                        }
-                    }
+                        })
                 })
+            } else {
+                resolve(contents)
             }
-        }
+
+        })
     })
 }
 
+let get_html_link = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.readdir(path, (err, files) => {
+            if (files !== undefined) {
+                resolve(`/open?path=${path}&type=directory`)
+            } else {
+                resolve(`/open?path=${path}&type=file`)
+            }
+        })
+    })
+}
 
 // MAIN INITIALISER
 if (!process.env.IP || !process.env.PORT) {
@@ -129,13 +105,15 @@ if (!process.env.IP || !process.env.PORT) {
     app.listen(3030, require('ip').address(), () => {
         server_on = `${require('ip').address()}:3030`
         console.log(`HOSTING LOCALLY: Listening on: http://${server_on} `);
-        __getcontents__(__fromdir, dir_log)
+
+        __getcontents__(__fromdir)
     })
 } else {
     // Listen on the process.env.IP and PORT
     server_on = `${process.env.IP}:${process.env.PORT}`
     app.listen(process.env.PORT, () => {
         console.log(`HOSTING OTHER SERVER: Listening on: http://${server_on} `);
-        __getcontents__(__fromdir, dir_log)
+
+        __getcontents__(__fromdir)
     })
 }

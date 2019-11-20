@@ -4,9 +4,10 @@
 -	More reliable check if item inside a directory is a directory.
 -	More stable and reliable system thanks to Promises (Last time, all responses have a 200ms buffer before getting the response. Now it happenc async-ly)
 -	Replaced `/open_file` with `/open` and it takes two query parameter: `path` and `type`. `path` is the current path, `type` is either `directory` or `file`, this helps the endpoint extinguished whether to download or open the directory.
--	Due to the `/open` endpoint having the `path` parameter, it means that anyone can place a valid directory and snoop around!. This is quicky countered-by a check if the current path includes the `argument` passed in when running the server!
+-	Due to the `/open` endpoint having the `path` parameter, it means that anyone can place a valid directory and snoop around!. This is quickly countered by a check if the current path includes the `argument` passed in when running the server!
 -	Removed unreliable `count` variable that "helps". (Previous changelog: `Now recursive file or directory viewing is enabled through the help of a counter variable.`).
 -	Now, there is a `../` directory, it brings you a step back (in terms of directory)
+-	Added a tutorial. (md file)
 
 # v4.0.1
 -	Added partials for the EJS files (more consistent changes server-wide for the front-end)
